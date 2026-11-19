@@ -526,7 +526,7 @@ function buildAuthorsDiv(paper) {
   expandBtn.setAttribute("aria-expanded", "false");
 
   const localSummary = document.createElement("span");
-  const localAuthors = authors.filter((a) =>
+  const localAuthors = authors.slice(MAX_AUTHORS_SHOWN).filter((a) =>
     ["strong", "weak"].includes(paper.local_authors?.[a]));
   if (localAuthors.length) {
     localSummary.innerHTML = " (incl. " + localAuthors
