@@ -154,7 +154,7 @@ async function loadDay(offset) {
     allPapers = buildListingPapers(data);
 
     document.getElementById("fetched-at").textContent =
-      data.fetched_at ? `fetched ${data.fetched_at.slice(0, 16).replace("T", " ")} UTC` : "";
+      data.fetched_at ? `fetched ${formatChicagoTimestamp(data.fetched_at)}` : "";
     updateDateLabel(data.date || currentDate);
   } catch (e) {
     allPapers = [];
@@ -198,7 +198,7 @@ async function loadDiscussed() {
       id: p.paper_id,
     }));
     document.getElementById("fetched-at").textContent =
-      data.generated_at ? `updated ${data.generated_at.slice(0, 16).replace("T", " ")} UTC` : "";
+      data.generated_at ? `updated ${formatChicagoTimestamp(data.generated_at)}` : "";
     updateDateLabel("discussed");
     loaded = true;
   } catch (e) {
@@ -704,6 +704,20 @@ function buildDiscussedCard(paper) {
 
   card.append(meta, titleDiv, authorsDiv);
   return card;
+}
+
+function formatChicagoTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "unknown time";
+  return date.toLocaleString("en-US", {
+    timeZone: "America/Chicago",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
 }
 
 function formatUtcDate(ts) {

@@ -124,3 +124,10 @@ test('startup works before and after DOMContentLoaded', () => {
     assert.equal(calls, 1);
   }
 });
+
+
+test('fetched timestamps use Chicago standard or daylight time', () => {
+  assert.match(context.formatChicagoTimestamp('2026-01-15T02:30:00Z'), /Jan 14, 2026.*8:30 PM CST/);
+  assert.match(context.formatChicagoTimestamp('2026-07-15T02:30:00Z'), /Jul 14, 2026.*9:30 PM CDT/);
+  assert.equal(context.formatChicagoTimestamp('invalid'), 'unknown time');
+});
